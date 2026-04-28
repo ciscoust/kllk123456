@@ -1,0 +1,72 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "User specific settings and progress",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "displayName": { "type": "string" },
+        "email": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "dailyStreak": { "type": "integer" },
+        "lastActive": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email"]
+    },
+    "Goal": {
+      "title": "Manifestation Goal",
+      "description": "A goal being attracted via the manifestation ritual",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "desire": { "type": "string", "description": "What is the desire?" },
+        "why": { "type": "string", "description": "Why is it wanted?" },
+        "worthiness": { "type": "string", "description": "Proof of worthiness" },
+        "obstacles": { "type": "string", "description": "Obstacles removed" },
+        "preparation": { "type": "string", "description": "Preparation steps taken" },
+        "sacrifice": { "type": "string", "description": "Type of sacrifice (Time/Money/etc)" },
+        "sacrificeValue": { "type": "string" },
+        "offering": { "type": "string", "description": "What is offered as a gift before" },
+        "vow": { "type": "string", "description": "Vow if achieved" },
+        "covenant": { "type": "string", "description": "Long term covenant" },
+        "status": { "type": "string", "enum": ["active", "achieved", "archived"] },
+        "intensity": { "type": "number", "description": "0-100 magnet intensity level" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "visualAuraColor": { "type": "string" }
+      },
+      "required": ["userId", "desire", "status"]
+    },
+    "RitualLog": {
+      "title": "Daily Ritual Log",
+      "description": "Logs of daily affirmations and 369 practice",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "goalId": { "type": "string" },
+        "type": { "type": "string", "enum": ["fajr", "dhuhr", "asr", "maghrib", "isha", "session369"] },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "reflection": { "type": "string" }
+      },
+      "required": ["userId", "goalId", "type", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Store user profiles"
+    },
+    "/goals/{goalId}": {
+      "schema": "Goal",
+      "description": "Store goals created by users"
+    },
+    "/goals/{goalId}/logs/{logId}": {
+      "schema": "RitualLog",
+      "description": "Store ritual logs for a specific goal"
+    }
+  }
+}
